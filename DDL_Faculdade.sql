@@ -1,7 +1,6 @@
-DROP TABLE IF EXISTS aluno;
-DROP TABLE IF EXISTS disciplina;
 DROP TABLE IF EXISTS aluno_disciplina;
-
+DROP TABLE IF EXISTS disciplina;
+DROP TABLE IF EXISTS aluno;
 
 CREATE TABLE aluno (
     id SERIAL NOT NULL,
@@ -29,3 +28,4 @@ CREATE TABLE aluno_disciplina (
                 REFERENCES 
                     disciplina(id)
 );
+
