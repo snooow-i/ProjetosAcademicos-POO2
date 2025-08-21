@@ -1,3 +1,5 @@
+package br.edu.faculdade.poo2;
+
 public class Aluno {
 
     private Long id;
@@ -38,3 +40,4 @@ public class Aluno {
     }
 
 }
+
