@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS aluno_disciplina;
 
 CREATE TABLE aluno (
     id SERIAL NOT NULL,
-    matricula VARCHAR(4) UNIQUE NOT NULL,
+    matricula INT UNIQUE NOT NULL,
     nome VARCHAR(255) NOT NULL,
         PRIMARY KEY (id)
 );
@@ -19,13 +19,12 @@ CREATE TABLE disciplina (
 );
 
 CREATE TABLE aluno_disciplina (
-    aluno_id SERIAL NOT NULL,
-    disciplina_id SERIAL NOT NULL,
-        PRIMARY KEY (aluno_id),
+    aluno_id INT NOT NULL,
+    disciplina_id INT NOT NULL,
+        PRIMARY KEY (aluno_id, disciplina_id),
             FOREIGN KEY (aluno_id) 
                 REFERENCES 
                     aluno(id) ,
-        PRIMARY KEY (disciplina_id),
             FOREIGN KEY (disciplina_id) 
                 REFERENCES 
                     disciplina(id)
