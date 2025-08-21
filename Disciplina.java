@@ -1,25 +1,25 @@
 public class Disciplina {
 
-    private String id;
+    private Long id;
     private String codigo;
     private String nome;
-    private int CargaHoraria;
+    private int cargaHoraria;
 
     public Disciplina() {
     }
 
-    public Disciplina(String id, String codigo, String nome, int CargaHoraria) {
+    public Disciplina(Long id, String codigo, String nome, int cargaHoraria) {
         this.id = id;
         this.codigo = codigo;
         this.nome = nome;
-        this.CargaHoraria = CargaHoraria;
+        this.cargaHoraria = cargaHoraria;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -39,12 +39,13 @@ public class Disciplina {
         this.nome = nome;
     }
 
-    public int getCargaHoraria() 
-        return CargaHoraria;
+    public int getCargaHoraria() {
+        return cargaHoraria;
     }
 
     public void setCargaHoraria(int cargaHoraria) {
-        this.CargaHoraria = CargaHoraria;
+        this.cargaHoraria = cargaHoraria;
     }
+
 
 }
