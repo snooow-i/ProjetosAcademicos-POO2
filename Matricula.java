@@ -1,3 +1,5 @@
+package br.edu.faculdade.poo2;
+
 public class Matricula {
 
     private Aluno aluno;
@@ -26,3 +28,4 @@ public class Matricula {
     public void setDisciplina(Disciplina disciplina) {
         this.disciplina = disciplina;
     }
+
