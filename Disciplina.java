@@ -1,3 +1,5 @@
+package br.edu.faculdade.poo2;
+
 public class Disciplina {
 
     private Long id;
@@ -49,3 +51,4 @@ public class Disciplina {
 
 
 }
+
