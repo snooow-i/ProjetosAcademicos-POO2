@@ -1,4 +1,4 @@
-package br.edu.faculdade.poo2;
+package poo2;
 
 public class Oid {
 
@@ -16,4 +16,5 @@ public class Oid {
     public String toString() {
         return id;
     }
+
 }
