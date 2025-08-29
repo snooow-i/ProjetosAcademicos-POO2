@@ -1,4 +1,4 @@
-package br.edu.faculdade.poo2;
+package poo2;
 
 public class Aluno {
 
@@ -40,4 +40,5 @@ public class Aluno {
     }
 
 }
+
 
