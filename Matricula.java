@@ -1,4 +1,4 @@
-package br.edu.faculdade.poo2;
+package poo2;
 
 public class Matricula {
 
@@ -29,4 +29,5 @@ public class Matricula {
         this.disciplina = disciplina;
     }
 }
+
 
