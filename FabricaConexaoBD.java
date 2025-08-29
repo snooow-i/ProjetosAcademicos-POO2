@@ -1,4 +1,4 @@
-package br.edu.faculdade.poo2;
+package poo2;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -38,4 +38,5 @@ public class FabricaConexaoBD {
     public Connection getConexao() {
         return this.conexao;
     }
+
 }
