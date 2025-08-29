@@ -1,4 +1,4 @@
-package br.edu.faculdade.poo2;
+package poo2;
 
 import java.util.HashMap;
 import java.util.Map;
