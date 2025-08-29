@@ -1,4 +1,4 @@
-package br.edu.faculdade.poo2;
+package poo2;
 
 public class Disciplina {
 
@@ -51,4 +51,5 @@ public class Disciplina {
 
 
 }
+
 
