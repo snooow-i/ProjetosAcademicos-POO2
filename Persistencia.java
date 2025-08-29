@@ -1,4 +1,4 @@
-package br.edu.faculdade.poo2;
+package poo2;
 
 public class Persistencia {
 
@@ -27,4 +27,5 @@ public class Persistencia {
 
     public void excluir(Object objeto) {
     }
+
 }
