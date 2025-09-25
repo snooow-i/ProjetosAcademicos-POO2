@@ -4,16 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FabricaDeMapeador {
-
     private static FabricaDeMapeador instancia = null;
-    
     private Map<String, IMapeador> mapeadores;
 
     private FabricaDeMapeador() {
         this.mapeadores = new HashMap<>();
-        
-
         mapeadores.put(Aluno.class.getSimpleName(), new MapeadorBDRAluno());
+        mapeadores.put(Disciplina.class.getSimpleName(), new MapeadorBDRDisciplina());
     }
 
     public static FabricaDeMapeador obterInstancia() {
