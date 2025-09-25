@@ -1,28 +1,13 @@
 package poo2;
 
-public class Disciplina {
+public class Disciplina extends ObjetoPersistente {
 
-    private Long id;
     private String codigo;
     private String nome;
     private int cargaHoraria;
 
     public Disciplina() {
-    }
-
-    public Disciplina(Long id, String codigo, String nome, int cargaHoraria) {
-        this.id = id;
-        this.codigo = codigo;
-        this.nome = nome;
-        this.cargaHoraria = cargaHoraria;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        super();
     }
 
     public String getCodigo() {
@@ -31,6 +16,7 @@ public class Disciplina {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
+        this.salvar();
     }
 
     public String getNome() {
@@ -39,6 +25,7 @@ public class Disciplina {
 
     public void setNome(String nome) {
         this.nome = nome;
+        this.salvar();
     }
 
     public int getCargaHoraria() {
@@ -47,9 +34,6 @@ public class Disciplina {
 
     public void setCargaHoraria(int cargaHoraria) {
         this.cargaHoraria = cargaHoraria;
+        this.salvar();
     }
-
-
 }
-
-
