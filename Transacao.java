@@ -1,9 +1,7 @@
 package poo2;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import java.util.LinkedList;
+import java.util.Iterator;
 
 public class Transacao {
     private static Transacao instancia = null;
@@ -33,23 +31,13 @@ public class Transacao {
     }
 
     public boolean efetivar() {
-    List<IComando> comandosExecutados = new ArrayList<>();
-
-    for (IComando comando : this.comandos) {
-        if (comando.executar()) {
-            comandosExecutados.add(comando);
-        } else {
-            System.err.println("Falha na execução de um comando. Iniciando rollback...");
-            for (int i = comandosExecutados.size() - 1; i >= 0; i--) {
-                comandosExecutados.get(i).desfazer();
-            }
-            this.comandos.clear();
-            return false;
+        boolean resultado = true;
+        Iterator<IComando> it = comandos.iterator();
+        while (it.hasNext()) {
+            IComando comando = (IComando) it.next();
+            resultado = comando.executar();
         }
-    }
-
-    this.comandos.clear();
-    System.out.println("Transação efetivada com sucesso!");
-    return true;
+        comandos.clear();
+        return resultado;
 }
 }
