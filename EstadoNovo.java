@@ -1,17 +1,25 @@
 package poo2;
 
-public class EstadoNovo implements IObjetoEstado {
-    @Override
-    public void salvar(ObjetoPersistente obj) {
+public class EstadoNovo extends ObjetoEstadoAdapter {
+    private static EstadoNovo instancia = null;
 
-        System.out.println("[Estado] Objeto NOVO salvo. Transição para o estado SUJO.");
-        obj.setEstado(new EstadoSujo());
+    private EstadoNovo() {
+        tipo = TipoObjetoEstado.NOVO;
+    }
+
+    public static EstadoNovo obterInstancia() {
+        if (instancia == null) {
+            instancia = new EstadoNovo();
+        }
+        return instancia;
     }
 
     @Override
-    public void excluir(ObjetoPersistente obj) {
-
-        System.out.println("[Estado] Objeto NOVO excluído. Transição para o estado EXCLUÍDO.");
-        obj.setEstado(new EstadoExcluido());
+    public boolean efetivar(ObjetoPersistente ob) {
+        boolean resultado = Persistencia.obterInstancia().inserir(ob);
+        if (resultado) {
+            ob.setEstado(EstadoAntigoLimpo.obterInstancia());
+        }
+        return resultado;
     }
 }
