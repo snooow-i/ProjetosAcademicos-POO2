@@ -1,14 +1,12 @@
 package poo2;
 
 public class Aluno extends ObjetoPersistente {
-
     private int matricula;
     private String nome;
 
     public Aluno() {
         super();
     }
-
 
     public int getMatricula() {
         return matricula;
@@ -25,6 +23,6 @@ public class Aluno extends ObjetoPersistente {
 
     public void setNome(String nome) {
         this.nome = nome;
-        this.salvar();
+        this.salvar(); 
     }
 }
