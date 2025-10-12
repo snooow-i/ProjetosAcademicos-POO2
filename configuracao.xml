@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapeadores>
+    <mapeador tipo="BDR">
+        <chave>Aluno</chave>
+        <mapa>poo2.MapeadorBDRAluno</mapa>
+        <tabela>aluno</tabela>
+    </mapeador>
+    
+    <mapeador tipo="BDR">
+        <chave>Disciplina</chave>
+        <mapa>poo2.MapeadorBDRDisciplina</mapa>
+        <tabela>disciplina</tabela>
+    </mapeador>
+</mapeadores>
