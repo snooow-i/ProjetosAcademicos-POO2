@@ -1,7 +1,6 @@
 package poo2;
 
 public class Disciplina extends ObjetoPersistente {
-
     private String codigo;
     private String nome;
     private int cargaHoraria;
