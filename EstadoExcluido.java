@@ -1,13 +1,17 @@
 package poo2;
 
-public class EstadoExcluido implements IObjetoEstado {
-    @Override
-    public void salvar(ObjetoPersistente obj) {
-        System.out.println("[Estado] ERRO: Não é possível salvar um objeto no estado EXCLUÍDO.");
+public class EstadoExcluido extends ObjetoEstadoAdapter {
+    private static EstadoExcluido instancia = null;
+
+    private EstadoExcluido() {
+        tipo = TipoObjetoEstado.EXCLUIDO;
     }
 
-    @Override
-    public void excluir(ObjetoPersistente obj) {
-        System.out.println("[Estado] Objeto já está no estado EXCLUÍDO.");
+    public static EstadoExcluido obterInstancia() {
+        if (instancia == null) {
+            instancia = new EstadoExcluido();
+        }
+        return instancia;
     }
+    
 }
