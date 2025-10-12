@@ -11,38 +11,48 @@ public class Persistencia {
         }
         return instancia;
     }
-
+    
     public boolean inserir(Object objeto) {
         String nomeClasse = objeto.getClass().getSimpleName();
         IMapeador mapeador = FabricaDeMapeador.obterInstancia().obterMapeador(nomeClasse);
-
         if (mapeador != null) {
             return mapeador.inserir(objeto);
         }
-        
-        System.err.println("Nenhum mapeador encontrado para a classe: " + nomeClasse);
         return false;
     }
 
     public Object obter(Oid oid, Class<?> classe) {
         String nomeClasse = classe.getSimpleName();
         IMapeador mapeador = FabricaDeMapeador.obterInstancia().obterMapeador(nomeClasse);
-
         if (mapeador != null) {
             return mapeador.obter(oid);
         }
-
-        System.err.println("Nenhum mapeador encontrado para a classe: " + nomeClasse);
         return null;
     }
     
     public boolean atualizar(Object objeto) {
-        System.out.println("Método ATUALIZAR ainda não implementado.");
+        String nomeClasse = objeto.getClass().getSimpleName();
+        IMapeador mapeador = FabricaDeMapeador.obterInstancia().obterMapeador(nomeClasse);
+        if (mapeador != null) {
+            return mapeador.atualizar(objeto);
+        }
         return false;
     }
 
     public boolean excluir(Object objeto) {
-        System.out.println("Método EXCLUIR ainda não implementado.");
+        String nomeClasse = objeto.getClass().getSimpleName();
+        IMapeador mapeador = FabricaDeMapeador.obterInstancia().obterMapeador(nomeClasse);
+        if (mapeador != null) {
+            return mapeador.excluir(objeto);
+        }
         return false;
     }
+
+    public void recarregar(ObjetoPersistente objeto) {
+        String nomeClasse = objeto.getClass().getSimpleName();
+        IMapeador mapeador = FabricaDeMapeador.obterInstancia().obterMapeador(nomeClasse);
+        if (mapeador != null) {
+            mapeador.recarregar(objeto);
+    }
+}
 }

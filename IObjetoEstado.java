@@ -1,6 +1,9 @@
 package poo2;
 
 public interface IObjetoEstado {
-    void salvar(ObjetoPersistente obj);
-    void excluir(ObjetoPersistente obj);
+    boolean efetivar(ObjetoPersistente ob);
+    boolean excluir(ObjetoPersistente ob);
+    boolean retroceder(ObjetoPersistente ob);
+    boolean salvar(ObjetoPersistente ob);
+    TipoObjetoEstado tipo();
 }

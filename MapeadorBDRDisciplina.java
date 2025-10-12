@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public class MapeadorBDRDisciplina extends MapeadorDeBDRAbstrato {
 
-    public MapeadorBDRDisciplina() {
-        super("disciplina");
+    public MapeadorBDRDisciplina(String nomeTabela) {
+        super(nomeTabela); 
     }
 
     @Override
@@ -41,5 +41,29 @@ public class MapeadorBDRDisciplina extends MapeadorDeBDRAbstrato {
         disciplina.setNome(rs.getString("nome"));
         disciplina.setCargaHoraria(rs.getInt("carga_horaria"));
         return disciplina;
+    }
+
+    @Override
+    protected String obterSetValuesUpdate() {
+        return "codigo = ?, nome = ?, carga_horaria = ?";
+    }
+
+    @Override
+    protected int preencherParametrosUpdate(PreparedStatement stm, Object obj) throws SQLException {
+        Disciplina d = (Disciplina) obj;
+        stm.setString(1, d.getCodigo());
+        stm.setString(2, d.getNome());
+        stm.setInt(3, d.getCargaHoraria());
+        return 4;
+    }
+
+    @Override
+    protected void copiarDados(ObjetoPersistente destino, ObjetoPersistente origem) {
+        Disciplina disciplinaDestino = (Disciplina) destino;
+        Disciplina disciplinaOrigem = (Disciplina) origem;
+    
+        disciplinaDestino.setCodigo(disciplinaOrigem.getCodigo());
+        disciplinaDestino.setNome(disciplinaOrigem.getNome());
+        disciplinaDestino.setCargaHoraria(disciplinaOrigem.getCargaHoraria());
     }
 }

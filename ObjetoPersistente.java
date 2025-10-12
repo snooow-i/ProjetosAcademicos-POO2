@@ -1,39 +1,38 @@
-// Pacote: poo2
 package poo2;
 
-// Classe Contexto do Padrão State
 public abstract class ObjetoPersistente {
-    
     private Long id;
-    private IObjetoEstado estado; // Referência para o estado atual
+    private IObjetoEstado estado;
 
     public ObjetoPersistente() {
-        // Todo objeto começa no estado NOVO por padrão
-        this.estado = new EstadoNovo();
+        this.estado = EstadoNovo.obterInstancia();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    
     protected void setEstado(IObjetoEstado estado) {
         this.estado = estado;
     }
-    
+
     public IObjetoEstado getEstado() {
         return this.estado;
     }
 
-    // Métodos que delegam o comportamento para o objeto de estado atual
-    public void salvar() {
-        this.estado.salvar(this);
+    public boolean efetivar() {
+        return this.estado.efetivar(this);
     }
-    
-    public void excluir() {
-        this.estado.excluir(this);
+
+    public boolean excluir() {
+        return this.estado.excluir(this);
     }
+
+    public boolean retroceder() {
+        return this.estado.retroceder(this);
+    }
+
+    public boolean salvar() {
+        return this.estado.salvar(this);
+    }
+
 }

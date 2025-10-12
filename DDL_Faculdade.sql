@@ -1,3 +1,8 @@
+
+
+
+
+
 DROP TABLE IF EXISTS aluno_disciplina;
 DROP TABLE IF EXISTS disciplina;
 DROP TABLE IF EXISTS aluno;

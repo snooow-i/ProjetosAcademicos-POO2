@@ -22,18 +22,34 @@ public abstract class MapeadorDePersistenciaAbstrato implements IMapeador {
         }
     }
 
+    @Override
+    public final boolean atualizar(Object obj) {
+        try {
+            return executarUpdate(obj);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro de SQL ao atualizar", e);
+        }
+    }
+
+    @Override
+    public final boolean excluir(Object obj) {
+        try {
+            return executarDelete(obj);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro de SQL ao excluir", e);
+        }
+    }
+
+    public final void recarregar(ObjetoPersistente obj) {
+        try {
+            executarRecarregar(obj);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro de SQL ao recarregar", e);
+        }
+    }
     protected abstract boolean executarInsert(Object obj) throws SQLException;
     protected abstract Object buscarPeloOid(Oid oid) throws SQLException;
-
-    @Override
-    public boolean atualizar(Object obj) {
-        System.out.println("Atualizar não implementado.");
-        return false;
-    }
-
-    @Override
-    public boolean excluir(Object obj) {
-        System.out.println("Excluir não implementado.");
-        return false;
-    }
+    protected abstract boolean executarUpdate(Object obj) throws SQLException; 
+    protected abstract boolean executarDelete(Object obj) throws SQLException;
+    protected abstract void executarRecarregar(ObjetoPersistente obj) throws SQLException; 
 }
