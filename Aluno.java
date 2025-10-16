@@ -14,7 +14,6 @@ public class Aluno extends ObjetoPersistente {
 
     public void setMatricula(int matricula) {
         this.matricula = matricula;
-        this.salvar();
     }
 
     public String getNome() {
@@ -23,6 +22,5 @@ public class Aluno extends ObjetoPersistente {
 
     public void setNome(String nome) {
         this.nome = nome;
-        this.salvar(); 
     }
 }

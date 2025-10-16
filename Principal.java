@@ -1,87 +1,173 @@
 package poo2;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
 public class Principal {
 
+    private static final Persistencia persistencia = Persistencia.obterInstancia();
+    private static final Transacao transacao = Transacao.obterInstancia();
+    private static final Scanner entrada = new Scanner(System.in);
+
     public static void main(String[] args) {
         System.out.println("==========================================================");
-        System.out.println("== TESTE DO MÉTODO RETROCEDER EM ESTADO ANTIGO SUJO ==");
+        System.out.println("==        INICIANDO SUÍTE DE TESTES COMPLETOS       ==");
         System.out.println("==========================================================");
 
-        Persistencia persistencia = Persistencia.obterInstancia();
-        Transacao transacao = Transacao.obterInstancia();
-        Scanner entrada = new Scanner(System.in);
-        
-        Aluno alunoParaTeste = null;
-        String nomeOriginal = "Isaac Newton";
-        String nomeModificado = "Isaac Newton (Alterado)";
+        testeInsercaoELeitura();
+        pressioneEnterParaContinuar();
+        testeUpdateEmDuasFases();
+        pressioneEnterParaContinuar();
+        testeDeleteEmDuasFases();
+        pressioneEnterParaContinuar();
+        testeRetroceder();
 
-        // --- FASE 1: SETUP - Inserir um objeto para podermos testar ---
-        try {
-            System.out.println("\n--- FASE 1: INSERINDO OBJETO DE TESTE ---");
-            alunoParaTeste = new Aluno();
-            alunoParaTeste.setMatricula(20251122); // Use uma matrícula nova
-            alunoParaTeste.setNome(nomeOriginal);
+        System.out.println("\n==========================================================");
+        System.out.println("==         SUÍTE DE TESTES COMPLETOS FINALIZADA     ==");
+        System.out.println("==========================================================");
+        entrada.close();
+    }
 
-            transacao.adicionarInserir(alunoParaTeste);
-            transacao.efetivar();
+    private static void testeInsercaoELeitura() {
+        System.out.println("\n--- [TESTE 1/4] INSERÇÃO (CREATE) E LEITURA (READ) ---");
+        limparTabelas();
 
-            if (alunoParaTeste.getId() == null) {
-                System.err.println("   > FALHA: Não foi possível inserir o objeto de teste inicial.");
-                entrada.close();
-                return;
-            }
-            System.out.println("   > SUCESSO! Aluno '" + alunoParaTeste.getNome() + "' inserido com ID: " + alunoParaTeste.getId());
-            System.out.println("   >>> Pressione Enter para continuar...");
-            entrada.nextLine();
-        } catch (Exception e) {
-            System.err.println("   > ERRO INESPERADO NA FASE DE SETUP:");
-            e.printStackTrace();
-            entrada.close();
+        Aluno novoAluno = new Aluno();
+        novoAluno.setMatricula(202501);
+        novoAluno.setNome("Guilherme");
+        transacao.adicionarInserir(novoAluno);
+
+        System.out.println("   1. Tentando inserir 'Guilherme'...");
+        transacao.efetivar();
+
+        if (novoAluno.getId() != null && novoAluno.getEstado().tipo() == TipoObjetoEstado.ANTIGO_LIMPO) {
+            System.out.println("   > SUCESSO! Aluno inserido com ID: " + novoAluno.getId() + " e estado: " + novoAluno.getEstado().tipo());
+        } else {
+            System.err.println("   > FALHA na inserção!");
             return;
         }
 
-        // --- FASE 2: TESTE DO RETROCEDER ---
-        try {
-            System.out.println("\n--- FASE 2: TESTANDO O 'DESCARTAR ALTERAÇÕES' ---");
-            
-            // 2.1: Recuperamos o objeto para garantir que está limpo
-            Oid oidDoAluno = new Oid(alunoParaTeste.getId().toString());
-            Aluno alunoRecuperado = (Aluno) persistencia.obter(oidDoAluno, Aluno.class);
+        System.out.println("\n   2. Tentando ler o Aluno (ID: " + novoAluno.getId() + ") do banco...");
+        Aluno alunoLido = (Aluno) persistencia.obter(new Oid(novoAluno.getId().toString()), Aluno.class);
 
-            System.out.println("   1. Objeto recuperado. Nome: '" + alunoRecuperado.getNome() + "'. Estado: " + alunoRecuperado.getEstado().tipo());
-
-            // 2.2: Modificamos o objeto, fazendo-o transitar para ANTIGO_SUJO
-            System.out.println("   2. Modificando nome para: '" + nomeModificado + "'");
-            alunoRecuperado.setNome(nomeModificado);
-            System.out.println("      > Estado após modificação: " + alunoRecuperado.getEstado().tipo());
-
-            // 2.3: Chamamos retroceder() para descartar a alteração
-            System.out.println("   3. Chamando o método retroceder()...");
-            alunoRecuperado.retroceder();
-
-            // 2.4: Verificamos o resultado
-            System.out.println("   4. Verificando o estado final do objeto:");
-            System.out.println("      > Nome atual do objeto: '" + alunoRecuperado.getNome() + "'");
-            System.out.println("      > Estado final do objeto: " + alunoRecuperado.getEstado().tipo());
-
-            // 2.5: Verificação final
-            if (alunoRecuperado.getNome().equals(nomeOriginal) && alunoRecuperado.getEstado().tipo() == TipoObjetoEstado.ANTIGO_LIMPO) {
-                System.out.println("\n   >>> SUCESSO! As alterações foram descartadas e o estado voltou para ANTIGO_LIMPO. <<<");
-            } else {
-                System.err.println("\n   >>> FALHA! O objeto não foi revertido para o seu estado original. <<<");
-            }
-
-        } catch (Exception e) {
-            System.err.println("   > ERRO INESPERADO NA FASE DE TESTE:");
-            e.printStackTrace();
-        } finally {
-            entrada.close();
+        if (alunoLido != null && alunoLido.getNome().equals("Guilherme")) {
+            System.out.println("   > SUCESSO! Aluno lido corretamente. Nome: '" + alunoLido.getNome() + "'.");
+        } else {
+            System.err.println("   > FALHA na leitura!");
         }
+    }
 
-        System.out.println("\n==========================================================");
-        System.out.println("==                     FIM DO TESTE                     ==");
-        System.out.println("==========================================================");
+    private static void testeUpdateEmDuasFases() {
+        System.out.println("\n--- [TESTE 2/4] ATUALIZAÇÃO (UPDATE) EM DUAS FASES ---");
+        limparTabelas();
+
+        Aluno aluno = new Aluno();
+        aluno.setMatricula(202502);
+        aluno.setNome("Nikola Tesla");
+        transacao.adicionarInserir(aluno);
+        transacao.efetivar();
+        System.out.println("   [SETUP] Aluno 'Nikola Tesla' inserido no banco.");
+
+        System.out.println("\n   1. FASE 1 - Preparando para atualização...");
+        aluno.setNome("Nikola Tesla (Alterado)");
+        transacao.adicionarAtualizar(aluno);
+        transacao.efetivar();
+        System.out.println("     > Primeira efetivação concluída. Estado em memória: " + aluno.getEstado().tipo());
+        System.out.println("     > VERIFIQUE O BANCO: O nome do aluno NÃO deve ter sido alterado ainda.");
+        pressioneEnterParaContinuar();
+
+        System.out.println("   2. FASE 2 - Confirmando a atualização...");
+        transacao.adicionarAtualizar(aluno);
+        transacao.efetivar();
+        System.out.println("     > Segunda efetivação concluída. Estado em memória: " + aluno.getEstado().tipo());
+        
+        Aluno alunoVerificacao = (Aluno) persistencia.obter(new Oid(aluno.getId().toString()), Aluno.class);
+        if (alunoVerificacao.getNome().equals("Nikola Tesla (Alterado)")) {
+             System.out.println("   > SUCESSO! O nome foi atualizado no banco.");
+             System.out.println("   > VERIFIQUE O BANCO: O nome do aluno AGORA deve estar atualizado.");
+        } else {
+            System.err.println("   > FALHA! O nome não foi atualizado no banco.");
+        }
+    }
+
+    private static void testeDeleteEmDuasFases() {
+        System.out.println("\n--- [TESTE 3/4] EXCLUSÃO (DELETE) EM DUAS FASES ---");
+        limparTabelas();
+
+        Disciplina disciplina = new Disciplina();
+        disciplina.setCodigo("BIO01");
+        disciplina.setNome("Genética");
+        transacao.adicionarInserir(disciplina);
+        transacao.efetivar();
+        System.out.println("   [SETUP] Disciplina 'Genética' inserida no banco.");
+
+        System.out.println("\n   1. FASE 1 - Preparando para exclusão...");
+        transacao.adicionarExcluir(disciplina);
+        transacao.efetivar();
+        System.out.println("     > Primeira efetivação concluída. Estado em memória: " + disciplina.getEstado().tipo());
+        System.out.println("     > VERIFIQUE O BANCO: A disciplina AINDA deve existir.");
+        pressioneEnterParaContinuar();
+
+        System.out.println("   2. FASE 2 - Confirmando a exclusão...");
+        transacao.adicionarExcluir(disciplina);
+        transacao.efetivar();
+        System.out.println("     > Segunda efetivação concluída. Estado em memória: " + disciplina.getEstado().tipo());
+
+        Disciplina disciplinaVerificacao = (Disciplina) persistencia.obter(new Oid(disciplina.getId().toString()), Disciplina.class);
+        if (disciplinaVerificacao == null) {
+             System.out.println("   > SUCESSO! A disciplina foi removida do banco.");
+             System.out.println("   > VERIFIQUE O BANCO: A disciplina AGORA não deve mais existir.");
+        } else {
+            System.err.println("   > FALHA! A disciplina não foi removida do banco.");
+        }
+    }
+
+    private static void testeRetroceder() {
+        System.out.println("\n--- [TESTE 4/4] MÉTODO RETROCEDER ---");
+        limparTabelas();
+
+        Aluno aluno = new Aluno();
+        aluno.setMatricula(202503);
+        aluno.setNome("Galileo Galilei");
+        transacao.adicionarInserir(aluno);
+        transacao.efetivar();
+        System.out.println("   [SETUP] Aluno 'Galileo Galilei' inserido no banco.");
+        
+        aluno.setNome("Galileo Galilei (Alterado)");
+        aluno.salvar(); 
+        System.out.println("   1. Aluno modificado em memória. Nome: '" + aluno.getNome() + "', Estado: " + aluno.getEstado().tipo());
+        
+        System.out.println("   2. Chamando .retroceder()...");
+        aluno.retroceder();
+
+        if (aluno.getNome().equals("Galileo Galilei") && aluno.getEstado().tipo() == TipoObjetoEstado.ANTIGO_LIMPO) {
+            System.out.println("   > SUCESSO! O estado e os dados em memória foram revertidos.");
+            System.out.println("     - Nome final: '" + aluno.getNome() + "', Estado final: " + aluno.getEstado().tipo());
+        } else {
+            System.err.println("   > FALHA! O método retroceder não funcionou como esperado.");
+        }
+    }
+
+
+    private static void limparTabelas() {
+        System.out.println("\n--- [SETUP] Limpando tabelas do banco de dados...");
+        try (Connection conexao = FabricaConexaoBD.obterInstancia().getConexao();
+             Statement stm = conexao.createStatement()) {
+
+            stm.execute("DELETE FROM aluno");
+            stm.execute("DELETE FROM disciplina");
+  
+            conexao.commit();
+            System.out.println("   > Tabelas limpas com sucesso.");
+        } catch (SQLException e) {
+            System.err.println("   > FALHA AO LIMPAR TABELAS: " + e.getMessage());
+        }
+    }
+
+    private static void pressioneEnterParaContinuar() {
+        System.out.println("\n   ... Pressione Enter para continuar para o próximo teste ...");
+        entrada.nextLine();
     }
 }

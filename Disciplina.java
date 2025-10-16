@@ -15,7 +15,6 @@ public class Disciplina extends ObjetoPersistente {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
-        this.salvar();
     }
 
     public String getNome() {
@@ -24,7 +23,6 @@ public class Disciplina extends ObjetoPersistente {
 
     public void setNome(String nome) {
         this.nome = nome;
-        this.salvar();
     }
 
     public int getCargaHoraria() {
@@ -33,6 +31,5 @@ public class Disciplina extends ObjetoPersistente {
 
     public void setCargaHoraria(int cargaHoraria) {
         this.cargaHoraria = cargaHoraria;
-        this.salvar();
     }
 }

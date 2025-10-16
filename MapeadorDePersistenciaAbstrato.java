@@ -1,55 +1,92 @@
 package poo2;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class MapeadorDePersistenciaAbstrato implements IMapeador {
 
+    private Map<String, ObjetoPersistente> cache = new HashMap<>();
+
     @Override
-    public final boolean inserir(Object obj) {
+    public final Object obter(Oid oid) {
+        if (cache.containsKey(oid.getString())) {
+            System.out.println("[Cache] Objeto " + oid.getString() + " encontrado na cache.");
+            return cache.get(oid.getString());
+        }
+
         try {
-            return executarInsert(obj);
+            System.out.println("[Cache] Objeto " + oid.getString() + " não encontrado na cache. Buscando no banco de dados...");
+            ObjetoPersistente objDoBanco = (ObjetoPersistente) buscarPeloOid(oid);
+            
+            if (objDoBanco != null) {
+                cache.put(oid.getString(), objDoBanco);
+            }
+            return objDoBanco;
         } catch (SQLException e) {
-            throw new RuntimeException("Erro de SQL ao inserir", e);
+            System.err.println("### ERRO DE SQL AO OBTER: " + e.getMessage());
+            return null; 
         }
     }
 
     @Override
-    public final Object obter(Oid oid) {
+    public final boolean inserir(Object obj) {
         try {
-            return buscarPeloOid(oid);
+            boolean resultado = executarInsert(obj);
+            if (resultado) {
+                ObjetoPersistente pObj = (ObjetoPersistente) obj;
+                cache.put(pObj.getId().toString(), pObj);
+            }
+            return resultado;
         } catch (SQLException e) {
-            throw new RuntimeException("Erro de SQL ao obter", e);
+            System.err.println("### ERRO DE SQL AO INSERIR: " + e.getMessage());
+            return false; 
         }
     }
 
     @Override
     public final boolean atualizar(Object obj) {
         try {
-            return executarUpdate(obj);
+            boolean resultado = executarUpdate(obj);
+            if (resultado) {
+                ObjetoPersistente pObj = (ObjetoPersistente) obj;
+                cache.put(pObj.getId().toString(), pObj);
+            }
+            return resultado;
         } catch (SQLException e) {
-            throw new RuntimeException("Erro de SQL ao atualizar", e);
+            System.err.println("### ERRO DE SQL AO ATUALIZAR: " + e.getMessage());
+            return false; 
         }
     }
 
     @Override
     public final boolean excluir(Object obj) {
         try {
-            return executarDelete(obj);
+            boolean resultado = executarDelete(obj);
+            if (resultado) {
+                ObjetoPersistente pObj = (ObjetoPersistente) obj;
+                cache.remove(pObj.getId().toString());
+            }
+            return resultado;
         } catch (SQLException e) {
-            throw new RuntimeException("Erro de SQL ao excluir", e);
+            System.err.println("### ERRO DE SQL AO EXCLUIR: " + e.getMessage());
+            return false;
         }
     }
 
+    @Override
     public final void recarregar(ObjetoPersistente obj) {
         try {
             executarRecarregar(obj);
+            cache.put(obj.getId().toString(), obj);
         } catch (SQLException e) {
-            throw new RuntimeException("Erro de SQL ao recarregar", e);
+            System.err.println("### ERRO DE SQL AO RECARREGAR: " + e.getMessage());
         }
     }
+
     protected abstract boolean executarInsert(Object obj) throws SQLException;
     protected abstract Object buscarPeloOid(Oid oid) throws SQLException;
-    protected abstract boolean executarUpdate(Object obj) throws SQLException; 
+    protected abstract boolean executarUpdate(Object obj) throws SQLException;
     protected abstract boolean executarDelete(Object obj) throws SQLException;
     protected abstract void executarRecarregar(ObjetoPersistente obj) throws SQLException; 
 }

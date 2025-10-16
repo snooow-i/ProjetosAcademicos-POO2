@@ -1,7 +1,6 @@
 package poo2;
 
 import java.util.LinkedList;
-import java.util.Iterator;
 
 public class Transacao {
     private static Transacao instancia = null;
@@ -31,13 +30,25 @@ public class Transacao {
     }
 
     public boolean efetivar() {
-        boolean resultado = true;
-        Iterator<IComando> it = comandos.iterator();
-        while (it.hasNext()) {
-            IComando comando = (IComando) it.next();
-            resultado = comando.executar();
+        boolean resultadoComando = true;
+        int posicaoErro;
+        int i = 0;
+        
+        while (resultadoComando && i < comandos.size()) {
+            resultadoComando = comandos.get(i).executar();
+            if (!resultadoComando) {
+                posicaoErro = i;
+                System.err.println("[Transacao] FALHA ao executar comando na posição " + posicaoErro + ". Iniciando rollback em memória...");
+                for (int j = 0; j <= posicaoErro; j++) {
+                    comandos.get(j).desfazer();
+                }
+            }
+            i++;
         }
+        
         comandos.clear();
-        return resultado;
-}
+        return resultadoComando;
+    }
+
+
 }
