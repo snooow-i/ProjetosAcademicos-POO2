@@ -13,7 +13,7 @@ public class Principal {
 
     public static void main(String[] args) {
         System.out.println("==========================================================");
-        System.out.println("==        INICIANDO SUÍTE DE TESTES COMPLETOS       ==");
+        System.out.println("=========        INICIANDO TESTES COMPLETOS       ========");
         System.out.println("==========================================================");
 
         testeInsercaoELeitura();
@@ -25,13 +25,13 @@ public class Principal {
         testeRetroceder();
 
         System.out.println("\n==========================================================");
-        System.out.println("==         SUÍTE DE TESTES COMPLETOS FINALIZADA     ==");
-        System.out.println("==========================================================");
+        System.out.println("===============      TESTES FINALIZADOS     ================");
+        System.out.println("============================================================");
         entrada.close();
     }
 
     private static void testeInsercaoELeitura() {
-        System.out.println("\n--- [TESTE 1/4] INSERÇÃO (CREATE) E LEITURA (READ) ---");
+        System.out.println("\n---  INSERÇÃO E LEITURA ---");
         limparTabelas();
 
         Aluno novoAluno = new Aluno();
@@ -60,7 +60,7 @@ public class Principal {
     }
 
     private static void testeUpdateEmDuasFases() {
-        System.out.println("\n--- [TESTE 2/4] ATUALIZAÇÃO (UPDATE) EM DUAS FASES ---");
+        System.out.println("\n--- ATUALIZAÇÃO EM DUAS FASES ---");
         limparTabelas();
 
         Aluno aluno = new Aluno();
@@ -93,7 +93,7 @@ public class Principal {
     }
 
     private static void testeDeleteEmDuasFases() {
-        System.out.println("\n--- [TESTE 3/4] EXCLUSÃO (DELETE) EM DUAS FASES ---");
+        System.out.println("\n--- EXCLUSÃO EM DUAS FASES ---");
         limparTabelas();
 
         Disciplina disciplina = new Disciplina();
@@ -125,7 +125,7 @@ public class Principal {
     }
 
     private static void testeRetroceder() {
-        System.out.println("\n--- [TESTE 4/4] MÉTODO RETROCEDER ---");
+        System.out.println("\n--- RETROCEDER ---");
         limparTabelas();
 
         Aluno aluno = new Aluno();
