@@ -9,6 +9,7 @@ A arquitetura e o design são fortemente inspirados nos conceitos e padrões de 
 Este trabalho foi desenvolvido para a disciplina de Programação Orientada a Objetos II.
 
 ✨ Arquitetura e Padrões de Projeto
+
 O núcleo do framework é construído sobre uma base sólida de padrões de projeto GoF (Gang of Four), que garantem um sistema desacoplado, coeso e extensível.
 
 Façade (Fachada): A classe Persistencia atua como uma fachada, fornecendo uma interface simples e unificada para todos os serviços do subsistema de persistência, escondendo sua complexidade interna.
@@ -24,6 +25,7 @@ Command e Unit of Work (Unidade de Trabalho): Operações de banco de dados são
 Singleton: Padrão utilizado para garantir uma instância única de classes críticas como Persistencia, Transacao, FabricaDeMapeador e as classes de Estado, otimizando recursos e centralizando o controle.
 
 🚀 Tecnologias Utilizadas
+
 Linguagem: Java (Compilado e testado com JDK 8)
 
 Banco de Dados: PostgreSQL
@@ -33,6 +35,7 @@ Driver: JDBC para PostgreSQL
 Dependências: JDOM 2 (para parsing do arquivo de configuração XML)
 
 ⚙️ Funcionalidades
+
 Operações CRUD (Create, Read, Update, Delete) completas.
 
 Arquitetura extensível para novas entidades através da adição de classes e configuração XML.
@@ -46,6 +49,7 @@ Lógica de "commit em duas fases" para operações de UPDATE e DELETE.
 Cache de objetos (Identity Map) para otimização de performance em leituras.
 
 🛠️ Pré-requisitos
+
 JDK 8 (ou superior, mas a compilação deve ser compatível com a JRE do ambiente de execução).
 
 PostgreSQL instalado e em execução.
