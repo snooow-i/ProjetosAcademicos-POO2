@@ -1,4 +1,5 @@
 Framework de Mapeamento Objeto-Relacional (MOR) em Java
+
 📖 Sobre o Projeto
 Este projeto é um Mapeador Objeto-Relacional (MOR) acadêmico desenvolvido em Java puro, utilizando PostgreSQL como banco de dados. O objetivo é criar um framework de persistência que sirva como uma ponte entre o paradigma orientado a objetos da aplicação e o paradigma relacional do banco de dados.
 
