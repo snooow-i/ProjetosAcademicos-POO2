@@ -37,7 +37,7 @@ Arquitetura extensível para novas entidades através da adição de classes e c
 
 Gerenciamento de estado transacional para objetos persistentes.
 
-Implementação do padrão Unidade de Trabalho для agrupar operações.
+Implementação do padrão Unidade de Trabalho para agrupar operações.
 
 Lógica de "commit em duas fases" para operações de UPDATE e DELETE.
 
