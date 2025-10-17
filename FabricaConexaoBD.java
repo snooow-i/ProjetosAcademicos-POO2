@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class FabricaConexaoBD {
-    private static final String URL = "jdbc:postgresql://localhost:5433/faculdade"; 
+    private static final String URL = "jdbc:postgresql://localhost:5432/faculdade"; 
     private static final String USER = "postgres"; 
     private static final String PASSWORD = "postgres";
 
@@ -31,4 +31,5 @@ public class FabricaConexaoBD {
         novaConexao.setAutoCommit(false);
         return novaConexao;
     }
+
 }
