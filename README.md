@@ -1,57 +1,73 @@
-Framework de Mapeamento Objeto-Relacional (MOR) em Java
+# 🏛️ Framework de Mapeamento Objeto-Relacional (MOR)
 
-📖 Sobre o Projeto
+> Uma implementação acadêmica de um framework de persistência em Java puro, desenhado para transpor o abismo entre a Orientação a Objetos e o modelo Relacional.
 
-Este projeto é um Mapeador Objeto-Relacional (MOR) acadêmico desenvolvido em Java puro, utilizando PostgreSQL como banco de dados. O objetivo é criar um framework de persistência que sirva como uma ponte entre o paradigma orientado a objetos da aplicação e o paradigma relacional do banco de dados.
+<div align="center">
 
-A arquitetura e o design são fortemente inspirados nos conceitos e padrões de projeto apresentados no livro "Utilizando UML e Padrões" de Craig Larman, servindo como uma implementação prática desses conceitos.
+  ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+  ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+  ![GoF](https://img.shields.io/badge/Design_Patterns-GoF-333333?style=for-the-badge&logo=uml&logoColor=white)
 
-Este trabalho foi desenvolvido para a disciplina de Programação Orientada a Objetos II.
+</div>
 
-✨ Arquitetura e Padrões de Projeto
+---
 
-O núcleo do framework é construído sobre uma base sólida de padrões de projeto GoF (Gang of Four), que garantem um sistema desacoplado, coeso e extensível.
+## 📖 Sobre o Projeto
 
-Façade (Fachada): A classe Persistencia atua como uma fachada, fornecendo uma interface simples e unificada para todos os serviços do subsistema de persistência, escondendo sua complexidade interna.
+Este projeto foi desenvolvido para a disciplina de **Programação Orientada a Objetos II**, servindo como uma implementação prática dos conceitos avançados apresentados no livro *"Utilizando UML e Padrões"* de **Craig Larman**.
 
-Database Mapper & Factory: Para promover o desacoplamento, a lógica de acesso a dados (SQL) é isolada em classes Mapeador. A FabricaDeMapeador utiliza o padrão Factory para criar e fornecer o mapeador correto para cada entidade, lendo a configuração de um arquivo configuracao.xml.
+O objetivo não é apenas salvar dados, mas construir uma arquitetura desacoplada, coesa e extensível, aplicando rigorosamente os princípios de engenharia de software para resolver o problema da impedância objeto-relacional.
 
-Template Method: A hierarquia de Mapeadores (MapeadorDePersistenciaAbstrato e MapeadorDeBDRAbstrato) utiliza o Template Method para definir o esqueleto dos algoritmos de CRUD. Isso maximiza a reutilização de código e torna o framework extensível, permitindo que novas entidades sejam adicionadas com mínimo esforço.
+---
 
-State: O ciclo de vida transacional de um objeto (NOVO, ANTIGO_LIMPO, ANTIGO_SUJO, etc.) é gerenciado pelo padrão State. Cada estado é representado por uma classe, e o objeto ObjetoPersistente delega seu comportamento para o objeto de estado atual, eliminando a necessidade de condicionais complexas.
+## 🏗️ Arquitetura e Design Patterns
 
-Command e Unit of Work (Unidade de Trabalho): Operações de banco de dados são encapsuladas como objetos usando o padrão Command (ComandoDeInsercaoNoBD, etc.). A classe Transacao atua como uma Unidade de Trabalho, agrupando múltiplos comandos para serem executados em sequência.
+O núcleo do framework é construído sobre uma base sólida de padrões **GoF (Gang of Four)**. Cada decisão arquitetural resolve um problema específico de persistência:
 
-Singleton: Padrão utilizado para garantir uma instância única de classes críticas como Persistencia, Transacao, FabricaDeMapeador e as classes de Estado, otimizando recursos e centralizando o controle.
+| Padrão | Aplicação no Projeto |
+| :--- | :--- |
+| 🏰 **Façade** | A classe `Persistencia` atua como porta de entrada única, escondendo a complexidade interna do subsistema de persistência do resto da aplicação. |
+| 🏭 **Factory** | A `FabricaDeMapeador` lê o arquivo `configuracao.xml` e instancia dinamicamente o Mapeador correto para cada entidade, desacoplando a lógica SQL das classes de negócio. |
+| 📝 **Template Method** | As classes abstratas de mapeamento definem o "esqueleto" dos algoritmos CRUD, permitindo que novas entidades sejam adicionadas apenas implementando os detalhes específicos, maximizando o reuso. |
+| 🚦 **State** | O ciclo de vida do objeto (`NOVO`, `ANTIGO_LIMPO`, `ANTIGO_SUJO...`) é gerido por classes de estado, eliminando condicionais complexas (`if/else`) e delegando o comportamento para o estado atual. |
+| 📦 **Command & UoW** | Operações de banco são encapsuladas em objetos (`Command`). A classe `Transacao` atua como **Unit of Work**, agrupando esses comandos para execução em lote e garantindo atomicidade. |
+| 💎 **Singleton** | Garante que serviços críticos como a `Persistencia` e a `FabricaDeMapeador` tenham instância única, centralizando o controle de recursos. |
 
-🚀 Tecnologias Utilizadas
+---
 
-Linguagem: Java (Compilado e testado com JDK 8)
+## ⚙️ Funcionalidades
 
-Banco de Dados: PostgreSQL
+O framework oferece um ciclo completo de persistência:
 
-Driver: JDBC para PostgreSQL
+* ✅ **CRUD Completo:** Operações de Create, Read, Update e Delete abstraídas.
+* ✅ **Identity Map:** Cache de objetos para evitar leituras duplicadas do banco na mesma transação.
+* ✅ **Extensibilidade XML:** Adição de novas entidades via configuração sem recompilar o núcleo.
+* ✅ **Gestão Transacional:** Lógica de "commit em duas fases" para integridade referencial.
+* ✅ **Dirty Checking:** O sistema sabe automaticamente quais objetos foram modificados e precisam ser salvos.
 
-Dependências: JDOM 2 (para parsing do arquivo de configuração XML)
+---
 
-⚙️ Funcionalidades
+## 🛠️ Tecnologias Utilizadas
 
-Operações CRUD (Create, Read, Update, Delete) completas.
+<div align="left">
+  <img src="https://img.shields.io/badge/Java-JDK_8-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" />
+  <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" />
+  <img src="https://img.shields.io/badge/JDBC-Connector-gray?style=for-the-badge&logo=java&logoColor=white" />
+  <img src="https://img.shields.io/badge/XML-JDOM_2-orange?style=for-the-badge&logo=xml&logoColor=white" />
+</div>
 
-Arquitetura extensível para novas entidades através da adição de classes e configuração XML.
+---
 
-Gerenciamento de estado transacional para objetos persistentes.
+## 🚀 Como Executar
 
-Implementação do padrão Unidade de Trabalho para agrupar operações.
+### Pré-requisitos
+* **Java JDK 8+**
+* **PostgreSQL** instalado e rodando.
+* **pgAdmin** (Opcional, para visualização).
 
-Lógica de "commit em duas fases" para operações de UPDATE e DELETE.
+### Configuração
+1.  Clone o repositório.
+2.  Importe o projeto na sua IDE favorita (Eclipse/IntelliJ/VS Code).
+3.  Configure o arquivo `configuracao.xml` com as credenciais do seu banco PostgreSQL.
+4.  Execute a classe `Principal` (ou a classe de teste fornecida).
 
-Cache de objetos (Identity Map) para otimização de performance em leituras.
-
-🛠️ Pré-requisitos
-
-JDK 8 (ou superior, mas a compilação deve ser compatível com a JRE do ambiente de execução).
-
-PostgreSQL instalado e em execução.
-
-Uma ferramenta de gerenciamento de banco de dados como o pgAdmin.
